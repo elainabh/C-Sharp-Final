@@ -10,11 +10,11 @@ namespace MoldyPotatoes.ConsoleApp
     {
         MovieRepository _repo = new MovieRepository(); //field
 
-        ICustomConsole _console; //dependency injection
+        ICustomConsole _console; //declared interface
 
         public UserInterface(ICustomConsole console)
         {
-            _console = console;
+            _console = console; //dependency injection
         }
 
         bool isRunning = true;
@@ -28,7 +28,7 @@ namespace MoldyPotatoes.ConsoleApp
                 _console.PrintMainMenu();
                 string userInput = _console.GetUserInput();
 
-                //UserInputPortal(userInput);
+                UserInputPortal(userInput);
             }
         }
 
@@ -63,7 +63,6 @@ namespace MoldyPotatoes.ConsoleApp
                     break;
 
             }
-
         }
 
         private void CreateNewMovie()
@@ -86,13 +85,11 @@ namespace MoldyPotatoes.ConsoleApp
             _console.EnterStars();
             int stars = _console.GetUserInputInt();
 
-
             //Constructor
 
             Movie newMovie = new Movie(title, director, movieGenre, movieRating, stars);
 
             _repo.AddMovieToDatabase(newMovie);
-
 
         }
 
