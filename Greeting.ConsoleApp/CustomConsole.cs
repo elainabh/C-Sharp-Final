@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Greeting.Repository;
 
 namespace Greeting.ConsoleApp
 {
@@ -31,6 +32,33 @@ namespace Greeting.ConsoleApp
             Console.WriteLine("Is the customer: 1. Current \n 2. Past \n 3. Potential \n");
         }
 
+        public void PrintCustomer(Customer customer)
+        {
+            Console.WriteLine($"First name: {customer.FirstName} \n Last name: {customer.LastName} \n Type of customer: {customer.CustomerType} \n Email message: {customer.Email}");
+        }
+
+        public void PrintCustomers(List<Customer> customer)
+        {
+            foreach (Customer x in customer)
+            {
+                PrintCustomer(x);
+            }
+        }
+
+        public void PressAnyKeyToContinue()
+        {
+            Console.WriteLine("Press any key to continue...\n");
+            Console.ReadKey();
+        }
+
+        public void SelectACustomerToEdit(string name)
+        {
+            Console.WriteLine("Enter the first name of the customer you would like to edit: \n");
+        }
+
+
+    
+        public void EditCustomersInfo
 
     }
 }

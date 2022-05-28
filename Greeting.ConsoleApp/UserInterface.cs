@@ -27,18 +27,18 @@ namespace Greeting.ConsoleApp
             }
         }
 
-        private void UserInputPoral(string inputFromUser)
+        private void UserInputPortal(string inputFromUser)
         {
             switch(inputFromUser)
             {
                 case "1":
-                // CreateNewCustomer();
+                CreateNewCustomer();
                 break;
                 case "2":
-                // ViewAllCustomers();
+                ViewAllCustomers();
                 break;
                 case "3": 
-                // UpdateCustomerInfo();
+                UpdateCustomerInfo();
                 break;
                 case "4":
                 // DeleteACustomer();
@@ -59,17 +59,20 @@ namespace Greeting.ConsoleApp
             string lastName = _console.GetUserInput();
 
             _console.SelectCustomerType();
+
             string customerTypeSelection = _console.GetUserInput().ToLower();
-            String customerType = CustomerTypeSelection(customerTypeSelection);
+
+            string customerType = CustomerTypeSelection(customerTypeSelection);
 
             string customerEmail = _repo.GetEmailByType(customerType);
             
             //Constructor
-            CustomerType typeOfCustomer = (CustomerType) Enum.Parse(typeof(CustomerType), "Active", true);
+            
+            CustomerType typeOfCustomer = Enum.Parse<CustomerType>(customerType);
 
             Customer newCustomer = new Customer(firstName, lastName, typeOfCustomer, customerEmail);
 
-
+            _repo.AddCustomerToDatabase(newCustomer);
 
         }
 
@@ -100,7 +103,57 @@ namespace Greeting.ConsoleApp
 
         //READ
 
+        private void ViewAllCustomers()
+        {
+            List<Customer> allCustomers = _repo.GetAllCustomerInfoAndEmails();
+            allCustomers = allCustomers.OrderBy(o=>o.LastName).ToList();
+            _console.PrintCustomers(allCustomers);
+            _console.PressAnyKeyToContinue();
+
+        }
+
         //UPDATE A CUSTOMER
+
+        private void UpdateCustomerInfo()
+        {
+            string name = _console.GetUserInput();
+            Customer customer = _repo.GetCustomerByFirstName(name);
+                _console.SelectACustomerToEdit(name);
+                _repo.GetCustomerByFirstName(name);
+
+
+            if (name != null)
+            {
+                // PrintName(name);
+
+                Console.WriteLine("\n NEW first name: ");
+                string newFirstName = _console.GetUserInput();
+
+
+                Console.WriteLine("\n NEW last name: ");
+                string newLastName = _console.GetUserInput();
+
+
+                _console.SelectCustomerType();
+                string newCustomerType = _console.GetUserInput().ToLower();
+
+                string customerTypeNew = CustomerTypeSelection(newCustomerType);
+
+                string customerEmail = _repo.GetEmailByType(customerTypeNew);
+
+
+                CustomerType typeOfUpdatedCustomer = Enum.Parse<CustomerType>(customerTypeNew);
+
+                Customer updatedCustomer = new Customer(newFirstName, newLastName, typeOfUpdatedCustomer, customerEmail);
+
+            }
+            else
+            {
+                Console.WriteLine("Customer Not Found. Press any key to continue...");
+                Console.ReadKey();
+            }
+
+        }
 
     }
 }
