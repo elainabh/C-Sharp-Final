@@ -51,14 +51,35 @@ namespace Greeting.ConsoleApp
             Console.ReadKey();
         }
 
-        public void SelectACustomerToEdit(string name)
+        public void SelectACustomerToEdit()
         {
             Console.WriteLine("Enter the first name of the customer you would like to edit: \n");
         }
 
+        public void EnterACustomerFirstNameToDelete()
+        {
+            Console.WriteLine("Enter the first name of the customer you would like to delete: \n");
+        }
 
-    
-        public void EditCustomersInfo
+        public void CustomerSuccessfullyDeleted(Customer deletedCustomer)
+        {
+            Console.WriteLine($"{deletedCustomer.FirstName} successfully deleted.");
+        }
 
+        public void SomethingWentWrong()
+        {
+            Console.WriteLine("Something went wrong...");
+        }
+
+        public void CustomerNotFound()
+        {
+            Console.WriteLine("Customer Not Found. Press any key to continue...");
+            Console.ReadKey();
+        }
+
+        public void ExitMessage()
+        {
+            Console.WriteLine("Adios muchachos");
+        }
     }
 }

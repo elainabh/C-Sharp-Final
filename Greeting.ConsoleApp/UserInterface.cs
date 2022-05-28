@@ -41,10 +41,10 @@ namespace Greeting.ConsoleApp
                 UpdateCustomerInfo();
                 break;
                 case "4":
-                // DeleteACustomer();
+                DeleteACustomer();
                 break;
                 case "5":
-                // ExitApp();
+                Exit();
                 break;
 
             }
@@ -116,23 +116,23 @@ namespace Greeting.ConsoleApp
 
         private void UpdateCustomerInfo()
         {
+
+            _console.SelectACustomerToEdit();
             string name = _console.GetUserInput();
+
             Customer customer = _repo.GetCustomerByFirstName(name);
-                _console.SelectACustomerToEdit(name);
-                _repo.GetCustomerByFirstName(name);
+            _repo.GetCustomerByFirstName(name);
 
 
             if (name != null)
             {
                 // PrintName(name);
 
-                Console.WriteLine("\n NEW first name: ");
-                string newFirstName = _console.GetUserInput();
-
+                // Console.WriteLine("\n NEW first name: ");
+                // string newFirstName = _console.GetUserInput();
 
                 Console.WriteLine("\n NEW last name: ");
                 string newLastName = _console.GetUserInput();
-
 
                 _console.SelectCustomerType();
                 string newCustomerType = _console.GetUserInput().ToLower();
@@ -141,19 +141,60 @@ namespace Greeting.ConsoleApp
 
                 string customerEmail = _repo.GetEmailByType(customerTypeNew);
 
-
                 CustomerType typeOfUpdatedCustomer = Enum.Parse<CustomerType>(customerTypeNew);
 
-                Customer updatedCustomer = new Customer(newFirstName, newLastName, typeOfUpdatedCustomer, customerEmail);
+                Customer updatedCustomer = new Customer(customer.FirstName, newLastName, typeOfUpdatedCustomer, customerEmail);
+
+                _repo.UpdateCustomer(updatedCustomer);
 
             }
             else
             {
-                Console.WriteLine("Customer Not Found. Press any key to continue...");
-                Console.ReadKey();
+                _console.CustomerNotFound();
             }
+
 
         }
 
-    }
-}
+        private void DeleteACustomer()
+        {
+            _console.EnterACustomerFirstNameToDelete();
+            string nameToDelete = _console.GetUserInput();
+
+            Customer customerToDelete = _repo.GetCustomerByFirstName(nameToDelete);
+
+            // _repo.GetCustomerByFirstName(nameToDelete);
+
+            if(customerToDelete != null)
+            {
+                // _repo.DeleteCustomerFromDatabase(customerToDelete);
+                bool isSuccess = _repo.DeleteCustomerFromDatabase(customerToDelete);
+                
+                if(isSuccess)
+                {
+                    _console.CustomerSuccessfullyDeleted(customerToDelete);
+                }
+                else
+                {
+                    _console.SomethingWentWrong();
+                }
+            }
+
+            else
+            {
+                _console.CustomerNotFound();
+            }
+                _console.PressAnyKeyToContinue();
+            }
+        
+      public void Exit()
+        { 
+            isRunning = false;
+            _console.ExitMessage();
+         }
+        }
+        }
+        
+        
+        
+    
